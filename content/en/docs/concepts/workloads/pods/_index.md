@@ -514,3 +514,19 @@ you can read about the prior art, including:
 * [Marathon](https://github.com/d2iq-archive/marathon)
 * [Omega](https://research.google/pubs/pub41684/)
 * [Tupperware](https://engineering.fb.com/data-center-engineering/tupperware/).
+
+## Pod maintenance windows
+
+A *Pod maintenance window* is a period during which the control plane is allowed to
+disrupt a Pod for planned maintenance, such as node upgrades. You declare it with the
+`pods.aidocs.dev/maintenance-window` annotation, using a time range in UTC:
+
+```yaml
+metadata:
+  annotations:
+    pods.aidocs.dev/maintenance-window: "01:00-03:00"
+```
+
+Outside of that window, voluntary evictions of the Pod are refused, exactly as if a
+PodDisruptionBudget forbade them. Maintenance windows do not apply to involuntary
+disruptions such as node failures.
